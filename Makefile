@@ -120,10 +120,12 @@ shellcheckclean:  ## Clean up temporary container associated with shellcheck tar
 
 .PHONY: typelint
 typelint:  ## Run mypy type linting.
-	@echo "███ Running mypy type checking..."
+		@echo "███ Running mypy type checking..."
 	@mypy ./securedrop ./admin
+	@echo "checking ./securedrop/rm.py"
 	@mypy --disallow-incomplete-defs --disallow-untyped-defs ./securedrop/rm.py
-	@echo
+	@echo "checking ./securedrop/secure_tempfile.py"
+	@mypy --disallow-incomplete-defs --disallow-untyped-defs ./securedrop/secure_tempfile.py
 
 .PHONY: yamllint
 yamllint:  ## Lint YAML files (does not validate syntax!).
