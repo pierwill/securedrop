@@ -310,6 +310,35 @@ def make_blueprint(config: SDConfig) -> Blueprint:
 
     # This intentionally does not have @token_required, in the body of the
     # request, the user must present a valid AuthCredentialPresentation
+    @api.route('/groups/members/new', methods=['POST'])
+    def add_group_member() -> Tuple[flask.Response, int]:
+        """
+        Add member to existing group
+        """
+        group = shared_api.auth_as_group_member(request)
+        # check for is_admin?
+        if group:
+            # 2. (client) Encrypt new user’s UID to create UidCiphertext using GroupSecretParams.
+            # UidCiphertext = newuseruid.encrypt
+
+            # 3. Send to server with the desired role (is_admin or not).
+
+            # maybe?            # response = jsonify({'role': some_role})
+            # return response, 200
+
+            # 4. Server verifies the authenticated user’s Role
+            # (selected using the UidCiphertext from the provided AuthCredentialPresentation) lets them add users.
+
+            # 5. Server checks the new UidCiphertext is not already in the group.
+            # If it is, and it changes the role, we make that change.
+            # Else, the server adds the user to the group.
+
+            
+        else:
+            abort(403, 'err: could not authenticate')
+
+    # This intentionally does not have @token_required, in the body of the
+    # request, the user must present a valid AuthCredentialPresentation
     @api.route('/groups/new', methods=['POST'])
     def create_group() -> Tuple[flask.Response, int]:
         """
